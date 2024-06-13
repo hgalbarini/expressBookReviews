@@ -11,4 +11,15 @@ let books = {
       10: {"author": "Samuel Beckett","title": "Molloy, Malone Dies, The Unnamable, the trilogy", "reviews": {} }
 }
 
-module.exports=books;
+// Adding a review to the first book
+books[1].reviews = {
+    1: { "reviewer": "John Doe", "rating": 5, "comment": "A compelling read." },
+    2: { "reviewer": "Jane Smith", "rating": 4, "comment": "Very interesting, but a bit complex." }
+  };
+  
+  // Adding a review to the second book
+  books[2].reviews = {
+    1: { "reviewer": "Alice Johnson", "rating": 5, "comment": "Wonderful tales for all ages." }
+  };
+  
+  module.exports = books;
