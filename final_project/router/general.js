@@ -27,10 +27,6 @@ public_users.post("/register", (req, res) => {
   });
 
 
-public_users.post("/register", (req,res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
-});
 
 public_users.get('/', function (req, res) {
     // Convert the book data to a JSON string and send it as a response
