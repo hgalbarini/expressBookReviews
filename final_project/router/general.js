@@ -46,17 +46,37 @@ public_users.get('/', async (req, res) => {
   }
 });
 
-// Get book details based on ISBN
-public_users.get('/isbn/:isbn', function (req, res) {
+// Route to get book details based on ISBN
+public_users.get('/isbn/:isbn', async (req, res) => {
     const ISBN = req.params.isbn; // Access ISBN from request parameters
+    
 
-    // Check if the book with the provided ISBN exists in the books database
-    if (books[ISBN]) {
-        return res.status(200).json(books[ISBN]); // Return book details if found
-    } else {
-        return res.status(404).json({ message: "Book not found" }); // Book not found
+    try {
+      // Check if the book with the provided ISBN exists in the local database
+      if (!books[ISBN]) {
+        return res.status(404).json({ message: "Book not found" });
+      }
+  
+      // Simulated external API endpoint for fetching additional book details by ISBN
+      // const apiUrl = `https://api.example.com/books/${ISBN}`;
+  
+      // Fetch book details from the external API using Axios
+      // const response = await axios.get(apiUrl);
+  
+      // Combine local book data with fetched book details
+      const bookDetails = {
+        ...books[ISBN], // Local book details
+        
+      };
+  
+      return res.status(200).json(bookDetails); // Return combined book details
+    } catch (error) {
+      // Handle errors from Axios or external API
+      console.error('Error fetching book details:', error.message);
+      return res.status(500).json({ message: 'Failed to fetch book details' });
     }
-});
+  });
+
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
