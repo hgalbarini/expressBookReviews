@@ -97,26 +97,36 @@ public_users.get('/author/:author',function (req, res) {
 
 });
 
-// Get all books based on title
-public_users.get('/title/:title',function (req, res) {
-  const title = req.params.title
-  const booksByTitle = [];
-
-  for (let id in books){
-    if (books[id].title === title) {
-        booksByTitle.push(books[id]);
-    }
-  }
-
-  if (booksByTitle.length > 0){
-    return res.status(200).json(booksByTitle);
-  }
-  else {
-    return res.status(404).json({message: "Title not found"});
-  }
-
+// Route to get book details based on author
+public_users.get('/author/:author', (req, res) => {
+    const author = req.params.author;
+    const booksByAuthor = [];
   
-});
+    // Simulating an Axios request (replace with actual API call or database query)
+    axios.get('https://example.com/api/books') // Example API endpoint
+      .then(response => {
+        // Assuming response.data is an array of books fetched from the API
+        const booksFromApi = response.data;
+  
+        // Filter books by the provided author
+        booksFromApi.forEach(book => {
+          if (book.author === author) {
+            booksByAuthor.push(book);
+          }
+        });
+  
+        // Check if books by author were found
+        if (booksByAuthor.length > 0) {
+          return res.status(200).json(booksByAuthor);
+        } else {
+          return res.status(404).json({ message: "Author not found" });
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching books:', error.message);
+        return res.status(500).json({ message: 'Failed to fetch books' });
+      });
+  });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
