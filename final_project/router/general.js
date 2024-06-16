@@ -3,7 +3,7 @@ let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
-
+const axios = require('axios');
 
 public_users.post("/register", (req, res) => {
     const { username, password } = req.body;
@@ -32,6 +32,18 @@ public_users.get('/', function (req, res) {
     // Convert the book data to a JSON string and send it as a response
     const bookList = JSON.stringify(books, null, 2); // Pretty print with 2 spaces indentation
     return res.status(200).json(JSON.parse(bookList)); // Parse it back to JSON object to send
+});
+
+public_users.get('/', async (req, res) => {
+  try {
+   const bookList = JSON.stringify(books, null, 2); // Pretty print with 2 spaces indentation
+
+    // Send the response
+    return res.status(200).json(bookList);
+  } catch (error) {
+    console.error('Error fetching book list:', error.message);
+    return res.status(500).json({ message: 'Failed to fetch book list' });
+  }
 });
 
 // Get book details based on ISBN
