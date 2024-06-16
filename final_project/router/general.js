@@ -139,5 +139,35 @@ public_users.get('/review/:isbn',function (req, res) {
   }
 });
 
-
+// Route to get book details based on title
+public_users.get('/title/:title', (req, res) => {
+    const title = req.params.title;
+    const booksByTitle = [];
+  
+    // Simulating an Axios request (replace with actual API call or database query)
+    axios.get('https://example.com/api/books') // Example API endpoint
+      .then(response => {
+        // Assuming response.data is an array of books fetched from the API
+        const booksFromApi = response.data;
+  
+        // Filter books by the provided title
+        booksFromApi.forEach(book => {
+          if (book.title.toLowerCase().includes(title.toLowerCase())) {
+            booksByTitle.push(book);
+          }
+        });
+  
+        // Check if books by title were found
+        if (booksByTitle.length > 0) {
+          return res.status(200).json(booksByTitle);
+        } else {
+          return res.status(404).json({ message: "Books with title not found" });
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching books:', error.message);
+        return res.status(500).json({ message: 'Failed to fetch books' });
+      });
+  });
+  
 module.exports.general = public_users;
